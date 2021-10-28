@@ -3,10 +3,10 @@ import 'package:leaderboard_ui/constants.dart';
 import 'package:sizer/sizer.dart';
 
 class RankWidget extends StatelessWidget {
-  final int rank;
+  final String rank;
   final String username;
-  final double time;
-  final double points;
+  final String time;
+  final String points;
   RankWidget(
       {required this.rank,
       required this.username,
@@ -21,7 +21,7 @@ class RankWidget extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              rank.toString(),
+              rank,
               style: kColumnItemNameStyle,
             ),
             SizedBox(
@@ -35,14 +35,14 @@ class RankWidget extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  time.toString(),
+                  time,
                   style: kColumnItemNameStyle,
                 ),
                 SizedBox(
                   width: 7.w,
                 ),
                 Text(
-                  points.toString(),
+                  points,
                   style: kColumnItemNameStyle,
                 ),
               ],
