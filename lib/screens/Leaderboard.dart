@@ -1,25 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:leaderboard_ui/leader_model.dart';
 import 'package:leaderboard_ui/widgets/Rank-Widget.dart';
 import 'package:sizer/sizer.dart';
 import 'package:leaderboard_ui/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final participantsRef = FirebaseFirestore.instance.collection("Leaderboard");
+final _fireStore = FirebaseFirestore.instance;
 
 class Leaderboard extends StatefulWidget {
+  static String id = 'LeaderBoard';
   @override
   _LeaderboardState createState() => _LeaderboardState();
 }
 
 class _LeaderboardState extends State<Leaderboard> {
-
-@override
+  @override
   void initState() {
     // TODO: implement initState
-  print(participantsRef.doc().get());
+    // print(participantsRef.doc().get());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -55,38 +57,34 @@ class _LeaderboardState extends State<Leaderboard> {
               Container(
                 color: kDarkGreyColor,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(10.w,3.w,10.w,3.w),
+                  padding: EdgeInsets.fromLTRB(10.w, 3.w, 10.w, 3.w),
                   child: Row(
                     children: [
-                      Text("USERNAME",style: kColumnNameTextStyle),
+                      Text("USERNAME", style: kColumnNameTextStyle),
                       Spacer(),
                       // This row is made for grouping the two columns i.e points and time
                       Row(
                         children: [
-                          Text(
-                            "POINTS",
-                            style: kColumnNameTextStyle
-                          ),
+                          Text("POINTS", style: kColumnNameTextStyle),
                           SizedBox(
                             width: 5.w,
                           ),
-                          Text("TIME",style: kColumnNameTextStyle),
+                          Text("TIME", style: kColumnNameTextStyle),
                         ],
                       ),
                     ],
                   ),
                 ),
               ),
-              rankWidget(),
-              rankWidget(),
-              rankWidget(),
-              rankWidget(),
-              rankWidget(),
-              rankWidget(),
-              rankWidget(),
-              rankWidget(),
-
-
+              MessagesStream()
+              // RankWidget(
+              //     rank: '1', username: 'Striver', time: '4.8', points: '6.308'),
+              // RankWidget(
+              //     rank: '1', username: 'Striver', time: '4.8', points: '6.308'),
+              // RankWidget(
+              //     rank: '1', username: 'Striver', time: '4.8', points: '6.308'),
+              // RankWidget(
+              //     rank: '1', username: 'Striver', time: '4.8', points: '6.308'),
 
               // Container(
               //   color: kDarkGreyColor,
@@ -113,6 +111,39 @@ class _LeaderboardState extends State<Leaderboard> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MessagesStream extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _fireStore.collection('LeaderBoard').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
+        }
+        final messages = snapshot.data!.docs;
+        List<RankWidget> messageWidgets = [];
+        for (var message in messages) {
+          final points = message['points'];
+          final rank = message['rank'];
+          final time = message['time'];
+          final username = message['username'];
+          print(username);
+          final messageWidget = RankWidget(
+              rank: rank, username: username, time: time, points: points);
+          messageWidgets.add(messageWidget);
+        }
+        return Expanded(
+          child: ListView(
+            reverse: true,
+            padding: EdgeInsets.all(10.0),
+            children: messageWidgets,
+          ),
+        );
+      },
     );
   }
 }
