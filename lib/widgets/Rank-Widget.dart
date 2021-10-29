@@ -15,7 +15,8 @@ class RankWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: kDarkGreyColor,
+      color: (int.parse(rank)%2==0)? kGreyColor:kDarkGreyColor,
+
       child: Padding(
         padding: EdgeInsets.fromLTRB(5.w, 2.w, 10.w, 2.w),
         child: Row(
@@ -52,4 +53,8 @@ class RankWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+Color rowColor(rank){
+  return rank % 2==0 ? kGreyColor : kDarkGreyColor;
 }
