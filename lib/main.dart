@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // darkTheme: ThemeData(fontFamily: 'WorkSans'),
         // theme: ThemeData.dark(fontFamily: 'Roboto Regular').copyWith(fontFamily: 'Roboto Regular'),
-        theme: ThemeData.dark().copyWith(
+        theme: ThemeData().copyWith(
           textTheme: ThemeData.dark().textTheme.apply(
                 fontFamily: 'WorkSans',
               ),

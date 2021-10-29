@@ -25,6 +25,7 @@ class _LeaderboardState extends State<Leaderboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: kDarkGreyColor,
         body: SizedBox(
           // maine khudse daala hai unbound dikha rha  tha isliye...iske badle kuch aur use  krna padega
           height: MediaQuery.of(context).size.height,
